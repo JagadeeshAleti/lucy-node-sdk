@@ -1,0 +1,22 @@
+{
+  "name": "lucy-node-sdk",
+  "version": "1.0.0",
+  "description": "Lucy External Connector SDK for node.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist/*"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "node dist/tests/test.js"
+  },
+  "author": "Haran Shivanan <haran@ecyber.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@microsoft/signalr": "^6.0.7",
+    "@types/node": "^18.6.4",
+    "@types/node-fetch": "^2.6.2",
+    "@types/signalr": "^2.2.37",
+    "node-fetch": "^2.5.3"
+  }
+}
