@@ -1,4 +1,4 @@
-const { LucyConnector } = require('./lucy-node-sdk');
+const { LucyConnector } = require('./lucy-node-sdk-main');
 const fetch = require('node-fetch');
 
 // GET Customer Types
