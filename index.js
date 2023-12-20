@@ -1,4 +1,5 @@
 const { LucyConnector } = require('./lucy-node-sdk');
+const fetch = require('node-fetch');
 
 // GET Customer Types
 async function execute(payload) {
@@ -52,7 +53,7 @@ async function execute(payload) {
 
 }
 
-const connector = LucyConnector.fromInstallationKey('http://lucy1.iviva.local:5000|SC:lucy1:8088bf901009d4f3|Fxelle', 'Fxelle', execute);
+const connector = LucyConnector.fromInstallationKey('https://plq.lucyday.io|SC:plq:bd9396d9127de79b|HS-Fxelle', 'Fxelle', execute);
 
 connector.init()
     .then(_ => console.log("Initialized"))
@@ -149,6 +150,7 @@ async function getComplaintList(server, apiKey) {
     });
 
     if (!response.ok) {
+        console.log("Something went wrong");
         throw (await response.text());
     }
     let json = await response.json();
