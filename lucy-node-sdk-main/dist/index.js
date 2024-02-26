@@ -65,6 +65,14 @@ class MessageBus {
     }
 }
 class LucyConnector {
+    static fromInstallationKey(key, type, func) {
+        let parts = key.split('|');
+        if (parts.length < 3) {
+            throw 'Installation key expects url|apikey|name';
+        }
+        let [url, apiKey, name, ...rest] = parts;
+        return new LucyConnector(type, name, url, apiKey, func);
+    }
     constructor(type, name, url, apiKey, func) {
         this.messageBus = null;
         this.uniqueId = generateUUID();
@@ -78,14 +86,6 @@ class LucyConnector {
         this.connectorType = type;
         this.name = name;
         this.connectorFunc = func;
-    }
-    static fromInstallationKey(key, type, func) {
-        let parts = key.split('|');
-        if (parts.length < 3) {
-            throw 'Installation key expects url|apikey|name';
-        }
-        let [url, apiKey, name, ...rest] = parts;
-        return new LucyConnector(type, name, url, apiKey, func);
     }
     init() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -154,13 +154,19 @@ class LucyConnector {
     }
     sendHeartBeat() {
         return __awaiter(this, void 0, void 0, function* () {
-            let r = yield this._executeService('Lucy/ExternalConnector/UpdateConnectorID', {
-                GUID: this.uniqueId,
-                Name: this.name,
-                Type: this.connectorType,
-            }, { json: true });
-            console.log('Heart Beat: ', r);
-            setTimeout(() => this.sendHeartBeat(), 5000);
+            try {
+                let r = yield this._executeService('Lucy/ExternalConnector/UpdateConnectorID', {
+                    GUID: this.uniqueId,
+                    Name: this.name,
+                    Type: this.connectorType,
+                }, { json: true });
+                console.log('Heart Beat new: ', r);
+                setTimeout(() => this.sendHeartBeat(), 5000);
+            }
+            catch (e) {
+                console.log("Error during heart beat: ", e);
+                setTimeout(() => this.sendHeartBeat(), 5000);
+            }
         });
     }
 }

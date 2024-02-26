@@ -138,13 +138,18 @@ export class LucyConnector {
         }
         return await resp.text();
     }
-    async sendHeartBeat() {
-        let r = await this._executeService('Lucy/ExternalConnector/UpdateConnectorID',{
-            GUID:this.uniqueId,
-            Name:this.name,
-            Type:this.connectorType,
-        },{json:true});
-        console.log('Heart Beat: ',r);
-        setTimeout(()=>this.sendHeartBeat(),5000);
+    async sendHeartBeat() { 
+        try{
+            let r = await this._executeService('Lucy/ExternalConnector/UpdateConnectorID',{
+                GUID:this.uniqueId,
+                Name:this.name,
+                Type:this.connectorType,
+            },{json:true});
+            console.log('Heart Beat: ',r);
+            setTimeout(()=>this.sendHeartBeat(),5000);
+        }catch(e) {     
+            console.log("Error during heart beat: ", e)       
+            setTimeout(()=>this.sendHeartBeat(),5000);
+        }
     }
 }
